@@ -84,7 +84,18 @@ body, html {
   margin: 0px;
 }
 
+/* this is register css */
+.hide {
+  display: none;
+}
 
+.valid {
+  display: inline-block;
+  /* Other styles for the valid icon */
+}
+.offscreen {
+  display: none;
+}
 
 
 /* Responsive layout */

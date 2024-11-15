@@ -13,7 +13,7 @@ export const sidebarData = [
     { 
         title: "Home", 
         icon: <FoundationIcon />, 
-        link:"/",
+        link:"/home",
     }, 
     { 
         title: "Profile", 

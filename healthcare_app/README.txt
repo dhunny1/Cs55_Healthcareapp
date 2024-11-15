@@ -10,6 +10,12 @@ npm install react-router-dom
 npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
 yarn add @material-ui/core
 
+
+npm install bcryptjs --legacy-peer-deps
+
+
+npm uninstall @mui/icons-material @mui/material @emotion/styled @emotion/react
+
 install this for login page 
 npm i axios
     - type:-  npm start

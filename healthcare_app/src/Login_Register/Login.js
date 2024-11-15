@@ -1,12 +1,21 @@
 import React from 'react'
 import { useRef, useState, useEffect, useContext } from 'react';
-import AuthContext from '../Context/AuthProvider';
+import AuthContext from '../Context/AuthProvider.js';
 
-import axios from '../API/axios';
+import { useNavigate } from 'react-router-dom';
+
+
+import axios from '../API/axios.js';
 const LOGIN_URL = '/auth';
+
+const USER_REGEX = /^[A-Za-z][A-Za-z0-9-_]{3,23}$/; /*This regular expression ensures that the username must start with a letter (either uppercase or lowercase), followed by 3 to 23 characters that can be letters, numbers, hyphens, or underscores.*/
+
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/; /*This line defines a regular expression that requires a password to be between 8 and 24 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%). */
+
 
 /**/
 const Login = () => {
+    const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef(); /**/
     const errRef = useRef();/*error*/
@@ -26,44 +35,16 @@ const Login = () => {
         setErrMsg(''); /*erases previous errors  */
     }, [user,pwd])
 
-    const handelSubmit = async (e) => {
+  
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const response = await axios.post(LOGIN_URL, 
-                JSON.stringify({user, pwd}),
-                {
-                    headers: {'Content-Type': 'application/json'},
-                    withCredentials: true
-                }
-        );
-            console.log(JSON.stringify(response?.data));
-            // console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({user, pwd, roles, accessToken});
-            setUser("");
-            setPwd('');
-            setSuccess(true);
-
-        }catch(err){
-            if(!err?.response){
-                setErrMsg('No Server Response');
-
-            }else if (err.response?.status === 400){
-                setErrMsg('Missing Username or Password');
-
-            }else if (err.response?.status === 401){
-                setErrMsg('Unauthorized');
-            }else{
-                setErrMsg('Login Failed');
-            }
-
-        }
-
-
-       
+        console.log(user,pwd);
+        setUser('');
+        setPwd('');
+        setSuccess(false);
     }
 
+   
   return (
     <>
         {success ? (
@@ -72,7 +53,7 @@ const Login = () => {
                 <h1>you are Logged In!!</h1>
                 <br />
                 <p>
-                    <a herf="#">Go to Home</a>
+                    <a href='/home'>go to home</a>
                 </p>
             </section>
         )   :(
@@ -80,7 +61,7 @@ const Login = () => {
     <section>
         <p ref={errRef} className={errMsg ? "errmsg": "offscreen"} aria-live="assertive">{errMsg}</p>
         <h1>Sign In</h1>
-        <form onSubmit={handelSubmit}>
+        <form onSubmit={handleSubmit}>
             <label htmlFor='username'>UserName: </label>
             <input type='text' 
             id="username" 
@@ -103,9 +84,11 @@ const Login = () => {
 
         <p>
             Need an Account?<br />
+            
             <span className='line'>
                 {/*put router link here */}
-                <a herf='#'>Sign Up</a>
+                <a href='http://localhost:3000/register'>Sign up</a>
+                
 
             </span>
         </p>
